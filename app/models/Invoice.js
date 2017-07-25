@@ -2,11 +2,11 @@ var db = require('../db_connection_pooling');
 
 var Invoice = {
   getAllInvoices: function(callback) {
-    return db.query("Select * from Invoice", callback);
+    return db.query("Select * from Invoice where IsActive = 1", callback);
   },
 
   getInvoiceById: function(id, callback) {
-    return db.query("select * from Invoice where Id = ?", [id], callback);
+    return db.query("select * from Invoice where Id = ? AND IsActive = 1", [id], callback);
   },
 
   addInvoice: function(Invoice, callback) {
@@ -22,7 +22,7 @@ var Invoice = {
   },
 
   deleteInvoice: function(id,callback) {
-    return db.query("delete from Invoice where Id = ?", [id], callback);
+    return db.query("update Invoice set IsActive = 0 where Id = ?", [id], callback);
   },
 
   updateInvoice: function(id, Invoice, callback) {
