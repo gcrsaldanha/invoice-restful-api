@@ -1,7 +1,7 @@
 var express = require('express');
-var router = express.Router();
-
 var Invoice = require('../models/Invoice')
+
+var router = express.Router();
 
 /* GET invoices listing. */
 router.get('/', function(req, res, next) {

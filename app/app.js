@@ -1,6 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var invoices = require('./routes/invoices');
+var invoices_router = require('./routes/invoices');
 
 var app = express();
 
@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 /* Routes */
-app.use('/invoices', invoices);
+app.use('/invoices', invoices_router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
