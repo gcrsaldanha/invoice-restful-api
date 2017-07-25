@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `Invoice` (
-	`Id` INTEGER NOT NULL,
+	`Id` INTEGER NOT NULL AUTO_INCREMENT,
 	`CreatedAt` DATETIME,
 	`ReferenceMonth` INTEGER,
 	`ReferenceYear` INTEGER,
