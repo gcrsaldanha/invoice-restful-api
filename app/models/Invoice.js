@@ -10,9 +10,7 @@ var Invoice = {
   },
 
   addInvoice: function(Invoice, callback) {
-    console.log(Invoice.CreatedAt);
-    query =
-    return db.query("Insert into Invoice values(?, ?, ?, ?, ?, ?, ?)", [
+    return db.query("Insert into Invoice values(null, ?, ?, ?, ?, ?, ?, ?)", [
       Invoice.CreatedAt,
       Invoice.ReferenceMonth,
       Invoice.ReferenceYear,

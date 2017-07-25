@@ -5,7 +5,6 @@ var Invoice = require('../models/Invoice')
 
 /* GET invoices listing. */
 router.get('/', function(req, res, next) {
-  //res.send('GET on /invoices');
   Invoice.getAllInvoices(function(error, rows) {
     if (error) {
       res.json(error);
@@ -17,7 +16,6 @@ router.get('/', function(req, res, next) {
 
 /* GET single invoice. */
 router.get('/:invoiceId', function(req, res, next) {
-  //res.send('GET on /invoices with invoiceId: ' + req.params['invoiceId']);
   Invoice.getInvoiceById(req.params.invoiceId, function(error, rows) {
     if (error) {
       res.json(error);
@@ -29,12 +27,10 @@ router.get('/:invoiceId', function(req, res, next) {
 
 /* POST invoice. */
 router.post('/', function(req, res, next) {
-  //res.send('POST on /invoices')
   Invoice.addInvoice(req.body, function(error, rows) {
     if (error) {
       res.json(error);
     } else {
-      console.log(rows)
       res.json(req.body)
     }
   });
@@ -42,7 +38,6 @@ router.post('/', function(req, res, next) {
 
 /* PUT invoice. */
 router.put('/:invoiceId', function(req, res, next) {
-  //res.send('PUT on /invoices')
   Invoice.updateInvoice(req.params.invoiceId, req.body, function(error, rows) {
     if (error) {
       res.json(error);
@@ -54,7 +49,6 @@ router.put('/:invoiceId', function(req, res, next) {
 
 /* DELETE invoice. */
 router.delete('/:invoiceId', function(req, res, next) {
-  //res.send('DELETE on /invoices')
   Invoice.deleteInvoice(req.params.invoiceId, function(error, rows) {
     if (error) {
       res.json(error);
