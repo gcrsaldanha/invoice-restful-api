@@ -26,14 +26,14 @@ var Invoice = {
   },
 
   updateInvoice: function(id, Invoice, callback) {
-    return db.query("update Invoice set \
+    query = db.query("update Invoice set \
       CreatedAt = ?, \
       ReferenceMonth = ?, \
       ReferenceYear = ?, \
       Document = ?, \
       Description = ?, \
       Amount = ?, \
-      IsActive = ?, \
+      IsActive = ? \
       where Id = ?",
       [
         Invoice.CreatedAt,
@@ -45,6 +45,7 @@ var Invoice = {
         Invoice.IsActive,
         id
       ], callback);
+    return query;
   }
 };
 module.exports=Invoice;
