@@ -2,22 +2,22 @@ var express = require('express');
 var router = express.Router();
 
 /* GET invoices listing. */
-router.get('/invoices', function(req, res) {
+router.get('/', function(req, res, next) {
   res.send('GET on /invoices');
 });
 
 /* POST invoice. */
-router.post('/invoices', function(req, res) {
+router.post('/', function(req, res, next) {
   res.send('POST on /invoices')
 });
 
 /* PUT invoice. */
-router.put('/invoices', function(req, res) {
+router.put('/', function(req, res, next) {
   res.send('PUT on /invoices')
 });
 
 /* DELETE invoice. */
-router.delete('/invoices', function(req, res) {
+router.delete('/', function(req, res, next) {
   res.send('DELETE on /invoices')
 });
 
