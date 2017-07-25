@@ -1,4 +1,4 @@
-var db=require('../db_connection_pooling');
+var db = require('../db_connection_pooling');
 
 var Invoice = {
   getAllInvoices:function(callback){
