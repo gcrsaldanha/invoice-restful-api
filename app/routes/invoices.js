@@ -32,11 +32,11 @@ function lookupInvoice(req, res, next) {
     if (error) {
       console.error(error);
       res.statusCode = 500;
-      return res.json({errors: ['Could not retrieve Invoice.']});
+      return res.json({errors: ['Could not retrieve Invoice']});
     }
     if (results.length === 0) {
       res.statusCode = 404;
-      return res.json({errors: ['Invoice not found.']});
+      return res.json({errors: ['Invoice not found']});
     }
     req.invoice = results[0];
     next();
@@ -63,6 +63,7 @@ router.get('/:page?/:limit?', function(req, res) {
 
 /* GET single invoice. */
 router.get('/:id([0-9]+)', lookupInvoice, function(req, res) {
+  res.statusCode = 200;
   return res.json(req.invoice);
 });
 
@@ -104,13 +105,15 @@ router.patch('/:id([0-9]+)', function(req, res, next) {
 });
 
 /* DELETE invoice. */
-router.delete('/:id([0-9]+)', function(req, res, next) {
-  Invoice.deleteInvoice(req.params.id, function(error, rows) {
+router.delete('/:id([0-9]+)', lookupInvoice, function(req, res) {
+  Invoice.deleteInvoice(req.params.id, function(error, results) {
     if (error) {
-      res.json(error);
-    } else {
-      res.json(rows);
+      console.error(error);
+      res.statusCode = 500;
+      return res.json({errors: ['Failed to delete Invoice']});
     }
+    res.statusCode = 204;
+    return res.send();
   });
 });
 
