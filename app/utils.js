@@ -15,6 +15,13 @@ var Utils = {
       limit = 1;
     }
     return parseInt(limit);
+  },
+
+  parseMonth: function(month) {
+    if (isNaN(month) || month < 1 || month > 12) {
+      return '';
+    }
+    return parseInt(month);
   }
 };
 

@@ -1,9 +1,14 @@
 var db = require('../db_connection_pooling');
 
 var Invoice = {
-  getInvoices: function(page, limit, callback) {
+  getInvoices: function(page, limit, month, callback) {
     var offset = (page - 1) * limit;
-    return db.query('SELECT * FROM Invoice WHERE IsActive = 1 LIMIT ? OFFSET ?', [limit, offset], callback);
+    var sql = 'SELECT * FROM Invoice WHERE IsActive = 1';
+    if (month !== '') {
+      sql += ' AND ReferenceMonth = ' + db.escape(month);
+    }
+    sql += ' LIMIT ' + db.escape(limit) + ' OFFSET ' + db.escape(offset);
+    return db.query(sql, callback);
   },
 
   getInvoiceById: function(id, callback) {

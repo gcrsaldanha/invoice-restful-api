@@ -44,10 +44,13 @@ function lookupInvoice(req, res, next) {
 }
 
 /* GET invoices listing. */
-router.get('/:page?/:limit?', function(req, res) {
+router.get('/:page?/:limit?/:month?/', function(req, res) {
   var page = Utils.parsePage(req.query.page);
   var limit = Utils.parseLimit(req.query.limit, 50, 10);
-  Invoice.getInvoices(page, limit, function(error, results) {
+  var month = Utils.parseMonth(req.query.month);
+  console.log(month);
+
+  Invoice.getInvoices(page, limit, month, function(error, results) {
     if (error) {
       console.error(error);
       res.statusCode = 500;
