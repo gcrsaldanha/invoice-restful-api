@@ -50,7 +50,6 @@ router.post('/', function(req, res) {
       res.statusCode = 500;
       return res.json({errors: ['Failed to create Invoice']});
     }
-    console.log(results);
     var createdInvoiceId = results.insertId;
     Invoice.getInvoiceById(createdInvoiceId, function(error, results) {
       if (error) {
