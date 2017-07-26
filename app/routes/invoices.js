@@ -44,13 +44,14 @@ function lookupInvoice(req, res, next) {
 }
 
 /* GET invoices listing. */
-router.get('/:page?/:limit?/:month?/', function(req, res) {
+router.get('/:page?/:limit?/:month?/:year?/:doc?', function(req, res) {
   var page = Utils.parsePage(req.query.page);
   var limit = Utils.parseLimit(req.query.limit, 50, 10);
   var month = Utils.parseMonth(req.query.month);
-  console.log(month);
+  var year = Utils.parseYear(req.query.year);
+  var doc = Utils.parseDoc(req.query.doc);
 
-  Invoice.getInvoices(page, limit, month, function(error, results) {
+  Invoice.getInvoices(page, limit, month, year, doc, function(error, results) {
     if (error) {
       console.error(error);
       res.statusCode = 500;
@@ -58,7 +59,7 @@ router.get('/:page?/:limit?/:month?/', function(req, res) {
     }
     res.statusCode = 200;
     if (results.length === 0) {
-      return res.json({message: ['No active Invoices registered']});
+      return res.json({message: ['No active Invoices registered that attend the specified fields.']});
     }
     return res.json({invoices: results});
   });

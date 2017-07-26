@@ -22,6 +22,20 @@ var Utils = {
       return '';
     }
     return parseInt(month);
+  },
+
+  parseYear: function(year) {
+    if (isNaN(year) || year < 0) {
+      return '';
+    }
+    return parseInt(year);
+  },
+
+  parseDoc: function(doc) {
+    if (typeof doc !== 'string') {
+      return '';
+    }
+    return doc;
   }
 };
 
