@@ -1,4 +1,5 @@
 var express = require('express');
+var moment = require('moment');
 var InvoiceDAO = require('../models/InvoiceDAO');
 var Utils = require('../Utils');
 
@@ -77,18 +78,19 @@ router.get('/:page?/:limit?/:month?/:year?/:doc?/:sort?/', function(req, res) {
 
 /* POST invoice. */
 router.post('/', validateInvoicePost, function(req, res) {
-  InvoiceDAO.addInvoice(req.body, function(error, results) {
+  currentDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
+  InvoiceDAO.addInvoice(req.body, currentDateTime, function(error, results) {
     if (error) {
       console.error(error);
       res.statusCode = 500;
       return res.json({errors: ['Failed to create Invoice']});
     }
     var createdInvoiceId = results.insertId;
-    Invoice.getInvoiceById(createdInvoiceId, function(error, results) {
+    InvoiceDAO.getInvoiceById(createdInvoiceId, function(error, results) {
       if (error) {
         console.error(error);
         res.statusCode = 500;
-        return res.json({errors: ['Failed to retrieved created Invoice']});
+        return res.json({errors: ['Failed to retrieve created Invoice']});
       }
       res.statusCode = 201;
       return res.json(results[0]);
