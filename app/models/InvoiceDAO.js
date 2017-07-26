@@ -31,11 +31,10 @@ var InvoiceDAO = {
     return db.query('SELECT * FROM Invoice WHERE Id = ? AND IsActive = 1', [id], callback);
   },
 
-  addInvoice: function(Invoice, createdAt, callback) {
+  addInvoice: function(Invoice, callback) {
     return db.query('INSERT INTO `Invoice` (\
       `CreatedAt`, `ReferenceMonth`, `ReferenceYear`, `Document`, `Description`, `Amount`, `IsActive`, `DeactiveAt`) \
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [
-      createdAt,
+      VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?)', [
       Invoice.ReferenceMonth,
       Invoice.ReferenceYear,
       Invoice.Document,

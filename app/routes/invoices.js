@@ -1,5 +1,4 @@
 var express = require('express');
-var moment = require('moment');
 var InvoiceDAO = require('../models/InvoiceDAO');
 var Utils = require('../Utils');
 
@@ -13,6 +12,9 @@ function validateInvoicePost(req, res, next) {
   req.checkBody('Document', 'Document cannot be greater than 14 characters').isLength({max: 14});
   req.checkBody('Amount', 'Amount must be a valid currency (separators: decimal (.), thousands (,)').isCurrency();
   req.checkBody('IsActive', 'IsActive must be 0 (False) or 1 (True)').isIn([0, 1]);
+  //if (req.params.DeactivateAt) {
+    //req.checkBody('DeactivateAt', 'Format for DeactivateAt must be YYYY-MM-DD HH:mm:ss');
+  //}
 
   req.getValidationResult().then(function(result) {
     if (!result.isEmpty()) {
