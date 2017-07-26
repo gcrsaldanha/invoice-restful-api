@@ -7,7 +7,7 @@ var Invoice = {
     if (month !== '') sql += ' AND ReferenceMonth = ' + db.escape(month);
     if (year !== '') sql += ' AND ReferenceYear = ' + db.escape(year);
     if (doc !== '') sql += " AND Document = " + db.escape(doc);
-    if (sortingDict !== '') {
+    if (Object.keys(sortingDict).length !== 0) {
       sql += ' ORDER BY ';
       var i = 0;
       for(var el in sortingDict) {

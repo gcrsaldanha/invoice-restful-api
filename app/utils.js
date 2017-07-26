@@ -39,18 +39,21 @@ var Utils = {
   },
 
   parseSort: function(sort) {
-    if (typeof sort !== 'string') {
-      return '';
+    if (typeof sort !== 'string' || sort.length === 0) {
+      return {};
     }
+    var allowedParameters = ['ReferenceYear', 'ReferenceMonth', 'Document'];
     var sortingArray = sort.split(',');
     var sortingDict = {};
     for (var i = 0; i < sortingArray.length; i++) {
       sortingParameter = sortingArray[i];
+      ordering = 'ASC';
       if (sortingParameter[0] === '-') {
         sortingParameter = sortingParameter.replace('-', '');
-        sortingDict[sortingParameter] = 'DESC';
-      } else {
-        sortingDict[sortingParameter] = 'ASC';
+        ordering = 'DESC';
+      }
+      if (allowedParameters.includes(sortingParameter)) {
+        sortingDict[sortingParameter] = ordering;
       }
     }
     return sortingDict;

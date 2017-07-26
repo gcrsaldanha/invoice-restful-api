@@ -5,7 +5,7 @@ var Utils = require('../Utils');
 var router = express.Router();
 
 /* Validation Middleware. */
-function validateInvoice(req, res, next) {
+function validateInvoicePost(req, res, next) {
   req.checkBody('ReferenceMonth', 'Month must be an integer between [1, 12]').isInt({min: 1, max: 12});
   req.checkBody('ReferenceYear', 'Year must be a positive integer number').isInt({min: 0});
   req.checkBody('Document', 'Document cannot be empty').notEmpty();
@@ -76,7 +76,7 @@ router.get('/:id([0-9]+)', lookupInvoice, function(req, res) {
 });
 
 /* POST invoice. */
-router.post('/', validateInvoice, function(req, res) {
+router.post('/', validateInvoicePost, function(req, res) {
   Invoice.addInvoice(req.body, function(error, results) {
     if (error) {
       console.error(error);
