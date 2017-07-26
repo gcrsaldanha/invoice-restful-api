@@ -51,9 +51,9 @@ router.get('/:page?/:limit?/:month?/:year?/:doc?/:sort?/', function(req, res) {
   var month = Utils.parseMonth(req.query.month);
   var year = Utils.parseYear(req.query.year);
   var doc = Utils.parseDoc(req.query.doc);
-  var sortingJSON = Utils.parseSort(req.query.sort);
+  var sortingDict = Utils.parseSort(req.query.sort);
 
-  Invoice.getInvoices(page, limit, month, year, doc, function(error, results) {
+  Invoice.getInvoices(page, limit, month, year, doc, sortingDict, function(error, results) {
     if (error) {
       console.error(error);
       res.statusCode = 500;
@@ -61,7 +61,9 @@ router.get('/:page?/:limit?/:month?/:year?/:doc?/:sort?/', function(req, res) {
     }
     res.statusCode = 200;
     if (results.length === 0) {
-      return res.json({message: ['No active Invoices registered that attend the specified fields.']});
+      return res.json({
+        message: ['No active Invoices registered that attend the specified fields.']
+      });
     }
     return res.json({invoices: results});
   });

@@ -1,14 +1,28 @@
 var db = require('../db_connection_pooling');
 
 var Invoice = {
-  getInvoices: function(page, limit, month, year, doc, callback) {
+  getInvoices: function(page, limit, month, year, doc, sortingDict, callback) {
     var offset = (page - 1) * limit;
     var sql = 'SELECT * FROM Invoice WHERE IsActive = 1';
     if (month !== '') sql += ' AND ReferenceMonth = ' + db.escape(month);
     if (year !== '') sql += ' AND ReferenceYear = ' + db.escape(year);
-    if (doc !== '') {
-      sql += " AND Document = " + db.escape(doc);
-  }
+    if (doc !== '') sql += " AND Document = " + db.escape(doc);
+    if (sortingDict !== '') {
+      sql += ' ORDER BY ';
+      var i = 0;
+      for(var el in sortingDict) {
+        i += 1;
+        var parameter = db.escape(el).replace(/'/g, "`");
+        var order = sortingDict[el];
+        // Last element of the list, no comma
+        if (i === Object.keys(sortingDict).length) {
+          sql += parameter + ' ' + order;
+        } else {
+          sql += parameter + ' ' + order + ', ';
+        }
+      }
+    }
+    console.log(sql);
     sql += ' LIMIT ' + db.escape(limit) + ' OFFSET ' + db.escape(offset);
     return db.query(sql, callback);
   },

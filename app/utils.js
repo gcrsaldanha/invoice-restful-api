@@ -43,18 +43,17 @@ var Utils = {
       return '';
     }
     var sortingArray = sort.split(',');
-    var arrayLength = sortingArray.length;
     var sortingDict = {};
-    for (var i = 0; i < arrayLength; i++) {
+    for (var i = 0; i < sortingArray.length; i++) {
       sortingParameter = sortingArray[i];
       if (sortingParameter[0] === '-') {
+        sortingParameter = sortingParameter.replace('-', '');
         sortingDict[sortingParameter] = 'DESC';
       } else {
         sortingDict[sortingParameter] = 'ASC';
       }
     }
-
-    return JSON.stringify(sortingDict);
+    return sortingDict;
   }
 };
 
