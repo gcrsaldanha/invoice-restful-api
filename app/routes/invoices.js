@@ -3,6 +3,24 @@ var Invoice = require('../models/Invoice')
 
 var router = express.Router();
 
+/* Validation Middleware. */
+function validateInvoice(req, res, next) {
+  req.checkBody('Document', 'Document can not be empty').notEmpty();
+  req.checkBody('ReferenceYear', 'Year must be a number').isNumeric();
+
+  var errors = req.validationErrors();
+  if (errors) {
+    var response = {errors: []};
+    errors.forEach(function(error) {
+      response.errors.push(error.msg);
+    });
+
+    res.statusCode = 400;
+    return res.json(response);
+  }
+  return next();
+}
+
 /* GET single Invoice Middleware. */
 function lookupInvoice(req, res, next) {
   var id = req.params.id;
@@ -43,7 +61,7 @@ router.get('/:id([0-9]+)', lookupInvoice, function(req, res) {
 });
 
 /* POST invoice. */
-router.post('/', function(req, res) {
+router.post('/', validateInvoice, function(req, res) {
   Invoice.addInvoice(req.body, function(error, results) {
     if (error) {
       console.error(error);

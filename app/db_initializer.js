@@ -32,6 +32,6 @@ connection.connect(function(err) {
   });
   connection.end(function(err){
     if (err) throw err;
-    console.log("Conncection closed. Database initialized.");
+    console.log("Connection closed. Database initialized.");
   });
 });
