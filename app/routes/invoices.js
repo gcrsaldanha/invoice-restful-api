@@ -5,20 +5,23 @@ var router = express.Router();
 
 /* Validation Middleware. */
 function validateInvoice(req, res, next) {
-  req.checkBody('Document', 'Document can not be empty').notEmpty();
-  req.checkBody('ReferenceYear', 'Year must be a number').isNumeric();
+  req.checkBody('ReferenceMonth', 'Month must be an integer between [1, 12]').isInt({min: 1, max: 12});
+  req.checkBody('ReferenceYear', 'Year must be a positive integer number').isInt({min: 0});
+  req.checkBody('Document', 'Document cannot be empty').notEmpty();
+  req.checkBody('Document', 'Document cannot be greater than 14 characters').isLength({max: 14});
+  req.checkBody('Amount', 'Amount must be a valid currency (separators: decimal (.), thousands (,)').isCurrency();
+  req.checkBody('IsActive', 'IsActive must be 0 (False) or 1 (True)').isIn([0, 1]);
 
-  var errors = req.validationErrors();
-  if (errors) {
-    var response = {errors: []};
-    errors.forEach(function(error) {
-      response.errors.push(error.msg);
-    });
-
-    res.statusCode = 400;
-    return res.json(response);
-  }
-  return next();
+  req.getValidationResult().then(function(result) {
+    if (!result.isEmpty()) {
+      res.statusCode = 400;
+      var response = {errors: result.array()};
+      return res.json(response);
+    } else {
+      req.sanitize('Amount').blacklist(',');
+      return next();
+    }
+  });
 }
 
 /* GET single Invoice Middleware. */
