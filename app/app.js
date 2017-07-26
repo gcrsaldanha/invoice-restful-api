@@ -4,8 +4,7 @@ var invoices_router = require('./routes/invoices');
 
 var app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({type: 'application/json'}));
 
 /* Routes */
 app.use('/invoices', invoices_router);

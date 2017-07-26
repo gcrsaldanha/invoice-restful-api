@@ -2,15 +2,17 @@ var db = require('../db_connection_pooling');
 
 var Invoice = {
   getAllInvoices: function(callback) {
-    return db.query("Select * from Invoice where IsActive = 1", callback);
+    return db.query('SELECT * FROM Invoice WHERE IsActive = 1', callback);
   },
 
   getInvoiceById: function(id, callback) {
-    return db.query("select * from Invoice where Id = ? AND IsActive = 1", [id], callback);
+    return db.query('SELECT * FROM Invoice WHERE Id = ? AND IsActive = 1', [id], callback);
   },
 
   addInvoice: function(Invoice, callback) {
-    return db.query("Insert into Invoice values(null, ?, ?, ?, ?, ?, ?, ?)", [
+    return db.query('INSERT INTO `Invoice` (\
+      `CreatedAt`, `ReferenceMonth`, `ReferenceYear`, `Document`, `Description`, `Amount`, `IsActive`) \
+      VALUES (?, ?, ?, ?, ?, ?, ?)', [
       Invoice.CreatedAt,
       Invoice.ReferenceMonth,
       Invoice.ReferenceYear,
@@ -48,4 +50,4 @@ var Invoice = {
     return query;
   }
 };
-module.exports=Invoice;
+module.exports = Invoice;
