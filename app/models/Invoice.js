@@ -1,8 +1,10 @@
 var db = require('../db_connection_pooling');
 
 var Invoice = {
-  getAllInvoices: function(callback) {
-    return db.query('SELECT * FROM Invoice WHERE IsActive = 1', callback);
+  getInvoices: function(page, limit, callback) {
+    var offset = (page - 1) * limit;
+    query = db.query('SELECT * FROM Invoice WHERE IsActive = 1 LIMIT ? OFFSET ?', [limit, offset], callback);
+    return  query;
   },
 
   getInvoiceById: function(id, callback) {

@@ -1,5 +1,6 @@
 var express = require('express');
-var Invoice = require('../models/Invoice')
+var Invoice = require('../models/Invoice');
+var Utils = require('../Utils');
 
 var router = express.Router();
 
@@ -43,8 +44,10 @@ function lookupInvoice(req, res, next) {
 }
 
 /* GET invoices listing. */
-router.get('/', function(req, res) {
-  Invoice.getAllInvoices(function(error, results) {
+router.get('/:page?/:limit?', function(req, res) {
+  var page = Utils.parsePage(req.query.page);
+  var limit = Utils.parseLimit(req.query.limit, 50, 10);
+  Invoice.getInvoices(page, limit, function(error, results) {
     if (error) {
       console.error(error);
       res.statusCode = 500;
