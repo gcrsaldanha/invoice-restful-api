@@ -38,7 +38,7 @@ router.get('/', function(req, res) {
 });
 
 /* GET single invoice. */
-router.get('/:id', lookupInvoice, function(req, res) {
+router.get('/:id([0-9]+)', lookupInvoice, function(req, res) {
   return res.json(req.invoice);
 });
 
@@ -65,8 +65,8 @@ router.post('/', function(req, res) {
 });
 
 /* PUT invoice. */
-router.put('/:invoiceId', function(req, res, next) {
-  Invoice.updateInvoice(req.params.invoiceId, req.body, function(error, rows) {
+router.put('/:id([0-9]+)', function(req, res, next) {
+  Invoice.updateInvoice(req.params.id, req.body, function(error, rows) {
     if (error) {
       res.json(error);
     } else {
@@ -76,13 +76,13 @@ router.put('/:invoiceId', function(req, res, next) {
 });
 
 /* PATCH invoice. */
-router.patch('/:invoiceId', function(req, res, next) {
+router.patch('/:id([0-9]+)', function(req, res, next) {
   res.json({message: 'Not yet implemented'});
 });
 
 /* DELETE invoice. */
-router.delete('/:invoiceId', function(req, res, next) {
-  Invoice.deleteInvoice(req.params.invoiceId, function(error, rows) {
+router.delete('/:id([0-9]+)', function(req, res, next) {
+  Invoice.deleteInvoice(req.params.id, function(error, rows) {
     if (error) {
       res.json(error);
     } else {
