@@ -1,5 +1,5 @@
 var express = require('express');
-var Invoice = require('../models/Invoice');
+var InvoiceDAO = require('../models/InvoiceDAO');
 var Utils = require('../Utils');
 
 var router = express.Router();
@@ -28,7 +28,7 @@ function validateInvoicePost(req, res, next) {
 /* GET single Invoice Middleware. */
 function lookupInvoice(req, res, next) {
   var id = req.params.id;
-  Invoice.getInvoiceById(id, function(error, results){
+  InvoiceDAO.getInvoiceById(id, function(error, results){
     if (error) {
       console.error(error);
       res.statusCode = 500;
@@ -53,7 +53,7 @@ router.get('/:page?/:limit?/:month?/:year?/:doc?/:sort?/', function(req, res) {
   var doc = Utils.parseDoc(req.query.doc);
   var sortingDict = Utils.parseSort(req.query.sort);
 
-  Invoice.getInvoices(page, limit, month, year, doc, sortingDict, function(error, results) {
+  InvoiceDAO.getInvoices(page, limit, month, year, doc, sortingDict, function(error, results) {
     if (error) {
       console.error(error);
       res.statusCode = 500;
@@ -77,7 +77,7 @@ router.get('/:id([0-9]+)', lookupInvoice, function(req, res) {
 
 /* POST invoice. */
 router.post('/', validateInvoicePost, function(req, res) {
-  Invoice.addInvoice(req.body, function(error, results) {
+  InvoiceDAO.addInvoice(req.body, function(error, results) {
     if (error) {
       console.error(error);
       res.statusCode = 500;
@@ -98,7 +98,7 @@ router.post('/', validateInvoicePost, function(req, res) {
 
 /* PUT invoice. */
 router.put('/:id([0-9]+)', function(req, res, next) {
-  Invoice.updateInvoice(req.params.id, req.body, function(error, rows) {
+  InvoiceDAO.updateInvoice(req.params.id, req.body, function(error, rows) {
     if (error) {
       res.json(error);
     } else {
@@ -114,7 +114,7 @@ router.patch('/:id([0-9]+)', function(req, res, next) {
 
 /* DELETE invoice. */
 router.delete('/:id([0-9]+)', lookupInvoice, function(req, res) {
-  Invoice.deleteInvoice(req.params.id, function(error, results) {
+  InvoiceDAO.deleteInvoice(req.params.id, function(error, results) {
     if (error) {
       console.error(error);
       res.statusCode = 500;

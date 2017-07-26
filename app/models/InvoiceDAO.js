@@ -72,4 +72,4 @@ var Invoice = {
     return query;
   }
 };
-module.exports = Invoice;
+module.exports = InvoiceDAO;
