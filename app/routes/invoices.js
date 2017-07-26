@@ -43,6 +43,12 @@ function lookupInvoice(req, res, next) {
   });
 }
 
+/* GET single invoice. */
+router.get('/:id([0-9]+)', lookupInvoice, function(req, res) {
+  res.statusCode = 200;
+  return res.json(req.invoice);
+});
+
 /* GET invoices listing. */
 router.get('/:page?/:limit?/:month?/:year?/:doc?/:sort?/', function(req, res) {
 
@@ -67,12 +73,6 @@ router.get('/:page?/:limit?/:month?/:year?/:doc?/:sort?/', function(req, res) {
     }
     return res.json({invoices: results});
   });
-});
-
-/* GET single invoice. */
-router.get('/:id([0-9]+)', lookupInvoice, function(req, res) {
-  res.statusCode = 200;
-  return res.json(req.invoice);
 });
 
 /* POST invoice. */

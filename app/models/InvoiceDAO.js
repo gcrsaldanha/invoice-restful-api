@@ -1,6 +1,6 @@
 var db = require('../db_connection_pooling');
 
-var Invoice = {
+var InvoiceDAO = {
   getInvoices: function(page, limit, month, year, doc, sortingDict, callback) {
     var offset = (page - 1) * limit;
     var sql = 'SELECT * FROM Invoice WHERE IsActive = 1';
