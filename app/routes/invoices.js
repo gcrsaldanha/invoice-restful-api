@@ -44,12 +44,14 @@ function lookupInvoice(req, res, next) {
 }
 
 /* GET invoices listing. */
-router.get('/:page?/:limit?/:month?/:year?/:doc?', function(req, res) {
+router.get('/:page?/:limit?/:month?/:year?/:doc?/:sort?/', function(req, res) {
+
   var page = Utils.parsePage(req.query.page);
   var limit = Utils.parseLimit(req.query.limit, 50, 10);
   var month = Utils.parseMonth(req.query.month);
   var year = Utils.parseYear(req.query.year);
   var doc = Utils.parseDoc(req.query.doc);
+  var sortingJSON = Utils.parseSort(req.query.sort);
 
   Invoice.getInvoices(page, limit, month, year, doc, function(error, results) {
     if (error) {

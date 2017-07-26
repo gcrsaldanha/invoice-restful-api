@@ -8,7 +8,7 @@ var Invoice = {
     if (year !== '') sql += ' AND ReferenceYear = ' + db.escape(year);
     if (doc !== '') {
       sql += " AND Document = " + db.escape(doc);
-    }
+  }
     sql += ' LIMIT ' + db.escape(limit) + ' OFFSET ' + db.escape(offset);
     return db.query(sql, callback);
   },

@@ -36,6 +36,25 @@ var Utils = {
       return '';
     }
     return doc;
+  },
+
+  parseSort: function(sort) {
+    if (typeof sort !== 'string') {
+      return '';
+    }
+    var sortingArray = sort.split(',');
+    var arrayLength = sortingArray.length;
+    var sortingDict = {};
+    for (var i = 0; i < arrayLength; i++) {
+      sortingParameter = sortingArray[i];
+      if (sortingParameter[0] === '-') {
+        sortingDict[sortingParameter] = 'DESC';
+      } else {
+        sortingDict[sortingParameter] = 'ASC';
+      }
+    }
+
+    return JSON.stringify(sortingDict);
   }
 };
 
