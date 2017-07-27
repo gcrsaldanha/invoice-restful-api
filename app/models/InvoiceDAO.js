@@ -6,7 +6,7 @@ var InvoiceDAO = {
     var sql = 'SELECT * FROM Invoice WHERE IsActive = 1';
     if (month !== '') sql += ' AND ReferenceMonth = ' + db.escape(month);
     if (year !== '') sql += ' AND ReferenceYear = ' + db.escape(year);
-    if (doc !== '') sql += " AND Document = " + db.escape(doc);
+    if (doc !== '') sql += ' AND Document = ' + db.escape(doc);
     if (Object.keys(sortingDict).length !== 0) {
       sql += ' ORDER BY ';
       var i = 0;

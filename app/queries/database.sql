@@ -1,11 +1,5 @@
 CREATE DATABASE IF NOT EXISTS InvoiceDB;
 
-CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';
-
-GRANT ALL PRIVILEGES ON InvoiceDB.* TO 'admin'@'localhost';
-
-FLUSH PRIVILEGES;
-
 USE InvoiceDB;
 
 CREATE TABLE IF NOT EXISTS Invoice (
@@ -18,5 +12,9 @@ CREATE TABLE IF NOT EXISTS Invoice (
   Amount DECIMAL(16, 2) NOT NULL,
   IsActive TINYINT NOT NULL,
   DeactiveAt DATETIME,
-  PRIMARY KEY(Id)
-)
+  PRIMARY KEY(Id),
+  INDEX ReferenceMonthIndex (ReferenceMonth),
+  INDEX ReferenceYearIndex (ReferenceYear),
+  INDEX DocumentIndex (Document),
+  INDEX IsActiveIndex (IsActive)
+);

@@ -19,8 +19,12 @@ CREATE TABLE IF NOT EXISTS Invoice (\
   Amount DECIMAL(16, 2) NOT NULL,\
   IsActive TINYINT NOT NULL,\
   DeactiveAt DATETIME,\
-  PRIMARY KEY(Id)\
-)\
+  PRIMARY KEY(Id), \
+  INDEX ReferenceMonthIndex (ReferenceMonth), \
+  INDEX ReferenceYearIndex (ReferenceYear), \
+  INDEX DocumentIndex (Document), \
+  INDEX IsActiveIndex (IsActive) \
+);\
 "
 connection.connect(function(err) {
   if (err) throw err;

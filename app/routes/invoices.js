@@ -29,9 +29,7 @@ router.get('/:page?/:limit?/:month?/:year?/:doc?/:sort?/', function(req, res) {
     }
     res.statusCode = 200;
     if (results.length === 0) {
-      return res.json({
-        message: ['No active Invoices registered that attend the specified fields.']
-      });
+      return res.json({invoices: []});
     }
     return res.json({invoices: results});
   });
