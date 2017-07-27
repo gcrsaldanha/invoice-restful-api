@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
 module.exports = connection;
 
 var create_database_sql = 'CREATE DATABASE IF NOT EXISTS ' + dbConfig.dbName + ';'
-var use_database_sql = 'USE ' + dbConfig.dbName + ' InvoiceDB;';
+var use_database_sql = 'USE ' + dbConfig.dbName + ';';
 var create_table_sql = '\
 CREATE TABLE IF NOT EXISTS Invoice (\
   Id INTEGER NOT NULL AUTO_INCREMENT,\
