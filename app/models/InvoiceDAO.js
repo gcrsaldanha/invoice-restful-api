@@ -50,22 +50,23 @@ var InvoiceDAO = {
   },
 
   updateInvoice: function(id, Invoice, callback) {
-    query = db.query("update Invoice set \
+    query = db.query("UPDATE Invoice SET \
       ReferenceMonth = ?, \
       ReferenceYear = ?, \
       Document = ?, \
       Description = ?, \
       Amount = ?, \
-      IsActive = ? \
-      where Id = ?",
+      IsActive = ?, \
+      DeactiveAt = ? \
+      WHERE Id = ?",
       [
-        Invoice.CreatedAt,
         Invoice.ReferenceMonth,
         Invoice.ReferenceYear,
         Invoice.Document,
         Invoice.Description,
         Invoice.Amount,
         Invoice.IsActive,
+        Invoice.DeactiveAt,
         id
       ], callback);
     return query;

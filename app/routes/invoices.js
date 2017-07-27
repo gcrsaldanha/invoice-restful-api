@@ -100,13 +100,23 @@ router.post('/', validateInvoicePost, function(req, res) {
 });
 
 /* PUT invoice. */
-router.put('/:id([0-9]+)', function(req, res, next) {
-  InvoiceDAO.updateInvoice(req.params.id, req.body, function(error, rows) {
+router.put('/:id([0-9]+)', lookupInvoice, validateInvoicePost, function(req, res, next) {
+  InvoiceDAO.updateInvoice(req.params.id, req.body, function(error, results) {
     if (error) {
-      res.json(error);
-    } else {
-      res.json(rows);
+      console.error(error);
+      res.statusCode = 500;
+      return res.json({errors: ['Failed to update Invoice']});
     }
+    var updatedInvoiceId = req.params.id;
+    InvoiceDAO.getInvoiceById(updatedInvoiceId, function(error, results) {
+      if (error) {
+        console.error(error);
+        res.statusCode = 500;
+        return res.json({errors: ['Failed to retrieve updated Invoice']});
+      }
+      res.statusCode = 200;
+      return res.json(results[0]);
+    });
   });
 });
 
