@@ -37,4 +37,21 @@ describe('InvoiceUtils (parsing)', function() {
     });
   });
 
+  describe('parseMonth(month)', () => {
+    it('should return \'\' if month is NaN', () => {
+      assert.equal(utils.parseMonth('not a number =/'), '');
+    });
+    it('should return \'\' if month < 1', () => {
+      assert.equal(utils.parseMonth(0), '');
+    });
+    it('should return \'\' if month > 12', () => {
+      assert.equal(utils.parseMonth(13), '');
+    });
+    it('should return month if month is between [1, 12]', () => {
+      assert.equal(utils.parseMonth(12), 12);
+      assert.equal(utils.parseMonth(1), 1);
+      assert.equal(utils.parseMonth(6), 6);
+    });
+  });
+
 });
