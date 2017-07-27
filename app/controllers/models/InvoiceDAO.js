@@ -92,6 +92,11 @@ var InvoiceDAO = {
         id
       ], callback);
     return query;
+  },
+
+  deleteAll: function(callback) {
+    query = db.query('TRUNCATE Invoice');
+    return query;
   }
 };
 module.exports = InvoiceDAO;
