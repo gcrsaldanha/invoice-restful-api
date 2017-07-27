@@ -80,5 +80,41 @@ describe('InvoiceUtils (parsing)', () => {
     });
   });
 
+  describe('parseDoc(doc)', () => {
+    it('should return an empty string if doc is not a string', () => {
+      assert.equal(utils.parseDoc(123), '');
+    });
+    it('should return doc if doc is a string', () => {
+      var doc = 'A string with ' + 123 + ' numbers';
+      assert.equal(utils.parseDoc(doc), doc);
+    });
+  });
+
+  describe('parseSort(sort)', () => {
+    var validSort = '-ReferenceYear,ReferenceMonth';
+    var onlyOneValidAttribute = 'RefEtc,ReferenceYear';
+    it('should return an empty dict if sort is not a string', () => {
+      var dict = utils.parseSort(1234);
+      var expectedDict = {}
+      assert.isTrue(Object.keys(dict).length === 0);
+      assert.equal(JSON.stringify(dict), JSON.stringify(expectedDict));
+    });
+    it('should return an empty dict if sort is an empty string', () => {
+      var dict = utils.parseSort('');
+      var expectedDict = {}
+      assert.isTrue(Object.keys(dict).length === 0);
+      assert.equal(JSON.stringify(dict), JSON.stringify(expectedDict));
+    });
+    it('should return a parsed dict {\'<InvoiceAttribute>\': \'ASC|DESC\'} if sort is valid', () => {
+      var expectedDict = JSON.stringify({'ReferenceYear': 'DESC', 'ReferenceMonth': 'ASC'});
+      assert.equal(JSON.stringify(utils.parseSort(validSort)), expectedDict);
+      assert.isTrue(Object.keys(utils.parseSort(validSort)).length === 2);
+    });
+    it('should return a parsed dict with ANY valid attribute', () => {
+      var expectedDict = JSON.stringify({'ReferenceYear': 'ASC'});
+      assert.equal(JSON.stringify(utils.parseSort(onlyOneValidAttribute)), expectedDict);
+      assert.isTrue(Object.keys(utils.parseSort(onlyOneValidAttribute)).length === 1);
+    });
+  });
 
 });
