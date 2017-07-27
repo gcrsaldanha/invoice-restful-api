@@ -3,7 +3,7 @@ var moment = require('moment');
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 
-var invoices_router = require('./routes/invoices');
+var invoicesRouter = require('./controllers/routes/invoices');
 
 var app = express();
 
@@ -18,6 +18,6 @@ app.use(expressValidator({
 }));
 
 /* Routes */
-app.use('/invoices', invoices_router);
+app.use('/invoices', invoicesRouter);
 
 module.exports = app;

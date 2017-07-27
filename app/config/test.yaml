@@ -1,0 +1,7 @@
+InvoiceProject:
+  dbConfig:
+    host: localhost
+    user: root
+    password: root
+    port: 3306
+    dbName: test_invoice_db

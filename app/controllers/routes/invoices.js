@@ -1,6 +1,6 @@
 var express = require('express');
 var InvoiceDAO = require('../models/InvoiceDAO');
-var Utils = require('../Utils');
+var Utils = require('../utils/InvoiceUtils');
 var Mws = require('./InvoiceMiddlewares');
 
 var router = express.Router();

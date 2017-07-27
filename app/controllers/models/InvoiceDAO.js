@@ -1,4 +1,4 @@
-var db = require('../db_connection_pooling');
+var db = require('../../dbPooling');
 
 var InvoiceDAO = {
   getInvoices: function(page, limit, month, year, doc, sortingDict, callback) {

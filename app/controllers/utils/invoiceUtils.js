@@ -1,4 +1,4 @@
-var Utils = {
+var InvoiceUtils = {
   parsePage: function(page) {
     if (isNaN(page) || page < 1) {
       page = 1;
@@ -60,4 +60,4 @@ var Utils = {
   }
 };
 
-module.exports = Utils;
+module.exports = InvoiceUtils;

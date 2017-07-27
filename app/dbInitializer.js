@@ -1,14 +1,18 @@
+var config = require('config');
+var dbConfig = config.get('InvoiceProject.dbConfig');
+
 var mysql = require('mysql');
 var connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
+  host: dbConfig.host,
+  user: dbConfig.user,
+  password: dbConfig.password,
+  port: dbConfig.port
 });
 module.exports = connection;
 
-var create_database_sql = "CREATE DATABASE IF NOT EXISTS InvoiceDB;"
-var use_database_sql = "USE InvoiceDB;";
-var create_table_sql = "\
+var create_database_sql = 'CREATE DATABASE IF NOT EXISTS ' + dbConfig.dbName + ';'
+var use_database_sql = 'USE ' + dbConfig.dbName + ' InvoiceDB;';
+var create_table_sql = '\
 CREATE TABLE IF NOT EXISTS Invoice (\
   Id INTEGER NOT NULL AUTO_INCREMENT,\
   CreatedAt DATETIME NOT NULL,\
@@ -25,17 +29,17 @@ CREATE TABLE IF NOT EXISTS Invoice (\
   INDEX DocumentIndex (Document), \
   INDEX IsActiveIndex (IsActive) \
 );\
-"
+'
 connection.connect(function(err) {
   if (err) throw err;
-  console.log("Connected!");
+  console.log('Connected!');
   connection.query(create_database_sql, function(err, result) {
     if (err) throw err;
-    console.log('InvoiceDB database created!');
+    console.log(dbConfig.dbName + ' database created!');
   });
   connection.query(use_database_sql, function(err, result) {
     if (err) throw err;
-    console.log('InvoiceDB selected.');
+    console.log(dbConfig.dbName + ' selected.');
   })
   connection.query(create_table_sql, function(err, result) {
     if (err) throw err;
@@ -43,6 +47,6 @@ connection.connect(function(err) {
   })
   connection.end(function(err){
     if (err) throw err;
-    console.log("Connection closed. Database initialized.");
+    console.log('Connection closed. Database initialized.');
   });
 });
