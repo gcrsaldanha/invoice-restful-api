@@ -1,9 +1,35 @@
 var express = require('express');
+var jwt = require('jsonwebtoken');
+var config = require('config');
+var apiConfig = config.InvoiceProject.apiConfig;
 var InvoiceDAO = require('../models/InvoiceDAO');
 var Utils = require('../utils/InvoiceUtils');
 var Mws = require('./InvoiceMiddlewares');
 
 var router = express.Router();
+
+// Token verification middleware
+router.use((req, res, next) => {
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  if(token) {
+    jwt.verify(token, apiConfig.secret, (err, decoded) => {
+      if(err) {
+        return res.json({
+          success: false,
+          errors: [{message: 'Failed to authenticate token.'}],
+        });
+      } else {
+        req.decoded = decoded;
+        next();
+      }
+    });
+  } else {
+    return res.status(403).send({
+      success: false,
+      errors: [{message: 'No token provided.'}]
+    });
+  }
+});
 
 /* GET single invoice. */
 router.get('/:id([0-9]+)', Mws.lookupInvoice, function(req, res) {

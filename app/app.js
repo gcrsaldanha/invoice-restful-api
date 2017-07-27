@@ -22,10 +22,10 @@ app.use(expressValidator({
 }));
 
 /* Routes */
-var invoicesRouter = require('./controllers/routes/invoices');
 var authRouter = require('./controllers/routes/auth');
-app.use('/invoices', invoicesRouter);
+var invoicesRouter = require('./controllers/routes/invoices');
 app.use('/auth', authRouter);
+app.use('/invoices', invoicesRouter);
 
 // Server startup
 port = config.InvoiceProject.nodeServer.port;
