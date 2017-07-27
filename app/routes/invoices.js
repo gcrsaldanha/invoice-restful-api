@@ -1,74 +1,12 @@
 var express = require('express');
 var InvoiceDAO = require('../models/InvoiceDAO');
 var Utils = require('../Utils');
+var Mws = require('./InvoiceMiddlewares');
 
 var router = express.Router();
 
-/* Validation Middleware. */
-function validateInvoicePostPut(req, res, next) {
-  req.checkBody('ReferenceMonth', 'Month must be an integer between [1, 12]').isInt({min: 1, max: 12});
-  req.checkBody('ReferenceYear', 'Year must be a positive integer number').isInt({min: 0});
-  req.checkBody('Document', 'Document cannot be empty').notEmpty();
-  req.checkBody('Document', 'Document cannot be greater than 14 characters').isLength({max: 14});
-  req.checkBody('Amount', 'Amount must be a valid currency (separators: decimal (.), thousands (,)').isCurrency();
-  req.checkBody('IsActive', 'IsActive must be 0 (False) or 1 (True)').isIn([0, 1]);
-  if (req.body.DeactiveAt) {
-    req.checkBody('DeactiveAt', 'DeactiveAt must follow format YYYY-MM-DD [hh:mm:ss]').isDateTime();
-  }
-
-  req.getValidationResult().then(function(result) {
-    if (!result.isEmpty()) {
-      res.statusCode = 400;
-      var response = {errors: result.array()};
-      return res.json(response);
-    } else {
-      req.sanitize('Amount').blacklist(',');
-      return next();
-    }
-  });
-}
-
-function validateInvoicePatch(req, res, next) {
-  req.checkBody('ReferenceMonth', 'Month must be an integer between [1, 12]').optional().isInt({min: 1, max: 12});
-  req.checkBody('ReferenceYear', 'Year must be a positive integer number').optional().isInt({min: 0});
-  req.checkBody('Document', 'Document cannot be empty').optional().notEmpty();
-  req.checkBody('Document', 'Document cannot be greater than 14 characters').optional().isLength({max: 14});
-  req.checkBody('Amount', 'Amount must be a valid currency (separators: decimal (.), thousands (,)').optional().isCurrency();
-  req.checkBody('IsActive', 'IsActive must be 0 (False) or 1 (True)').optional().isIn([0, 1]);
-  req.checkBody('DeactiveAt', 'DeactiveAt must follow format YYYY-MM-DD [hh:mm:ss]').optional().isDateTime();
-
-  req.getValidationResult().then(function(result) {
-    if (!result.isEmpty()) {
-      res.statusCode = 400;
-      var response = {errors: result.array()};
-      return res.json(response);
-    } else {
-      req.sanitize('Amount').blacklist(',');
-      return next();
-    }
-  });
-}
-
-/* GET single Invoice Middleware. */
-function lookupInvoice(req, res, next) {
-  var id = req.params.id;
-  InvoiceDAO.getInvoiceById(id, function(error, results){
-    if (error) {
-      console.error(error);
-      res.statusCode = 500;
-      return res.json({errors: ['Could not retrieve Invoice']});
-    }
-    if (results.length === 0) {
-      res.statusCode = 404;
-      return res.json({errors: ['Invoice not found']});
-    }
-    req.invoice = results[0];
-    next();
-  });
-}
-
 /* GET single invoice. */
-router.get('/:id([0-9]+)', lookupInvoice, function(req, res) {
+router.get('/:id([0-9]+)', Mws.lookupInvoice, function(req, res) {
   res.statusCode = 200;
   return res.json(req.invoice);
 });
@@ -100,7 +38,7 @@ router.get('/:page?/:limit?/:month?/:year?/:doc?/:sort?/', function(req, res) {
 });
 
 /* POST invoice. */
-router.post('/', validateInvoicePostPut, function(req, res) {
+router.post('/', Mws.validateInvoicePostPut, function(req, res) {
   InvoiceDAO.addInvoice(req.body, function(error, results) {
     if (error) {
       console.error(error);
@@ -121,7 +59,7 @@ router.post('/', validateInvoicePostPut, function(req, res) {
 });
 
 /* PUT invoice. */
-router.put('/:id([0-9]+)', lookupInvoice, validateInvoicePostPut, function(req, res) {
+router.put('/:id([0-9]+)', Mws.lookupInvoice, Mws.validateInvoicePostPut, function(req, res) {
   InvoiceDAO.updateInvoice(req.params.id, req.body, function(error, results) {
     if (error) {
       console.error(error);
@@ -142,7 +80,7 @@ router.put('/:id([0-9]+)', lookupInvoice, validateInvoicePostPut, function(req, 
 });
 
 /* PATCH invoice. */
-router.patch('/:id([0-9]+)', lookupInvoice, validateInvoicePatch, function(req, res) {
+router.patch('/:id([0-9]+)', Mws.lookupInvoice, Mws.validateInvoicePatch, function(req, res) {
   InvoiceDAO.patchInvoice(req.params.id, req.body, function(error, results) {
     if (error) {
       console.error(error);
@@ -163,7 +101,7 @@ router.patch('/:id([0-9]+)', lookupInvoice, validateInvoicePatch, function(req, 
 });
 
 /* DELETE invoice. */
-router.delete('/:id([0-9]+)', lookupInvoice, function(req, res) {
+router.delete('/:id([0-9]+)', Mws.lookupInvoice, function(req, res) {
   InvoiceDAO.deleteInvoice(req.params.id, function(error, results) {
     if (error) {
       console.error(error);

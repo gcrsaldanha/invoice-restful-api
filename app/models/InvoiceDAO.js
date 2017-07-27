@@ -22,7 +22,6 @@ var InvoiceDAO = {
         }
       }
     }
-    console.log(sql);
     sql += ' LIMIT ' + db.escape(limit) + ' OFFSET ' + db.escape(offset);
     return db.query(sql, callback);
   },
@@ -32,8 +31,8 @@ var InvoiceDAO = {
   },
 
   addInvoice: function(Invoice, callback) {
-    return db.query('INSERT INTO `Invoice` (\
-      `CreatedAt`, `ReferenceMonth`, `ReferenceYear`, `Document`, `Description`, `Amount`, `IsActive`, `DeactiveAt`) \
+    return db.query('INSERT INTO Invoice (\
+      CreatedAt, ReferenceMonth, ReferenceYear, Document, Description, Amount, IsActive, DeactiveAt) \
       VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?)', [
       Invoice.ReferenceMonth,
       Invoice.ReferenceYear,
