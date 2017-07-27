@@ -12,9 +12,9 @@ function validateInvoicePost(req, res, next) {
   req.checkBody('Document', 'Document cannot be greater than 14 characters').isLength({max: 14});
   req.checkBody('Amount', 'Amount must be a valid currency (separators: decimal (.), thousands (,)').isCurrency();
   req.checkBody('IsActive', 'IsActive must be 0 (False) or 1 (True)').isIn([0, 1]);
-  //if (req.params.DeactivateAt) {
-    //req.checkBody('DeactivateAt', 'Format for DeactivateAt must be YYYY-MM-DD HH:mm:ss');
-  //}
+  if (req.body.DeactiveAt) {
+    req.checkBody('DeactiveAt', 'DeactiveAt must follow format YYYY-MM-DD hh:mm:ss').isDateTime();
+  }
 
   req.getValidationResult().then(function(result) {
     if (!result.isEmpty()) {
@@ -80,8 +80,7 @@ router.get('/:page?/:limit?/:month?/:year?/:doc?/:sort?/', function(req, res) {
 
 /* POST invoice. */
 router.post('/', validateInvoicePost, function(req, res) {
-  currentDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
-  InvoiceDAO.addInvoice(req.body, currentDateTime, function(error, results) {
+  InvoiceDAO.addInvoice(req.body, function(error, results) {
     if (error) {
       console.error(error);
       res.statusCode = 500;
