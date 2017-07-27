@@ -1,0 +1,5 @@
+InvoiceProject:
+  dbConfig:
+    dbName: test_invoice_db
+  nodeServer:
+    port: 3000
