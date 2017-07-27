@@ -5,3 +5,7 @@ InvoiceProject:
     password: root
     port: 3306
     dbName: invoice_db
+  apiConfig:
+    secret: thatsmysecret
+    user: apiuser
+    password: apipassword

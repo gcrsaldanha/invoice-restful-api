@@ -25,7 +25,9 @@ var validInvoice = {
 
 describe('Invoices routes test', () => {
   beforeEach(function() {
-    InvoiceDAO.deleteAll((err, result) => { });
+    InvoiceDAO.deleteAll((err, result) => {
+      if (err) throw err;
+    });
   });
 
   describe('GET /invoices', function() {
