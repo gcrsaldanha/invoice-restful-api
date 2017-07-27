@@ -1,3 +1,4 @@
+/*
 process.env.NODE_ENV = 'test';
 
 var config = require('config');
@@ -9,12 +10,15 @@ var sinon = require('sinon');
 var app = require('../app');
 
 var assert = chai.assert;
+var expect = chai.expect;
 //var DAO = require('../controllers/models/InvoiceDAO');
 var serverConfig = config.get('InvoiceProject.nodeServer');
 
 describe('Invoices routes test', () => {
+  var InvoiceDAOStub, request, response;
+
   beforeEach(() => {
-    console.log('Mock DAO');
+    InvoiceDAOStub = sinon.stub();
   });
 
   describe('GET /invoices', () => {
@@ -34,3 +38,4 @@ describe('Invoices routes test', () => {
     });
   })
 });
+*/
