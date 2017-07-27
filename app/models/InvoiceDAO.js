@@ -50,7 +50,7 @@ var InvoiceDAO = {
   },
 
   updateInvoice: function(id, Invoice, callback) {
-    query = db.query("UPDATE Invoice SET \
+    query = db.query('UPDATE Invoice SET \
       ReferenceMonth = ?, \
       ReferenceYear = ?, \
       Document = ?, \
@@ -58,7 +58,30 @@ var InvoiceDAO = {
       Amount = ?, \
       IsActive = ?, \
       DeactiveAt = ? \
-      WHERE Id = ?",
+      WHERE Id = ?',
+      [
+        Invoice.ReferenceMonth,
+        Invoice.ReferenceYear,
+        Invoice.Document,
+        Invoice.Description,
+        Invoice.Amount,
+        Invoice.IsActive,
+        Invoice.DeactiveAt,
+        id
+      ], callback);
+    return query;
+  },
+
+  patchInvoice: function(id, Invoice, callback) {
+    query = db.query('UPDATE Invoice SET \
+      ReferenceMonth = COALESCE(?, ReferenceMonth), \
+      ReferenceYear = COALESCE(?, ReferenceYear), \
+      Document = COALESCE(?, Document), \
+      Description = COALESCE(?, Description), \
+      Amount = COALESCE(?, Amount), \
+      IsActive = COALESCE(?, IsActive), \
+      DeactiveAt = COALESCE(?, DeactiveAt) \
+      WHERE Id = ?',
       [
         Invoice.ReferenceMonth,
         Invoice.ReferenceYear,
