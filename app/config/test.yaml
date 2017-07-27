@@ -2,4 +2,5 @@ InvoiceProject:
   dbConfig:
     dbName: test_invoice_db
   nodeServer:
+    host: localhost
     port: 3000
