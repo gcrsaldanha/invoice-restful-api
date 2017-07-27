@@ -3,8 +3,9 @@ var config = require('config');
 var moment = require('moment');
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
-
 var invoicesRouter = require('./controllers/routes/invoices');
+
+console.log('Starting server using ' + config.util.getEnv('NODE_ENV') + ' environment.');
 
 var app = express();
 
@@ -21,7 +22,8 @@ app.use(expressValidator({
 /* Routes */
 app.use('/invoices', invoicesRouter);
 
-app.listen(3000);
-console.log('Server Listening on port 3000...');
+port = config.InvoiceProject.nodeServer.port;
+app.listen(port);
+console.log('Server Listening on port ' + port + '...');
 
 module.exports = app;

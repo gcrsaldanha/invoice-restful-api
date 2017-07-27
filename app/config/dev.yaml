@@ -1,7 +1,5 @@
 InvoiceProject:
   dbConfig:
-    host: localhost
-    user: root
-    password: root
-    port: 3306
     dbName: dev_invoice_db
+  nodeServer:
+    port: 3000

@@ -4,4 +4,4 @@ InvoiceProject:
     user: root
     password: root
     port: 3306
-    dbName: dev_invoice_db
+    dbName: invoice_db
