@@ -13,7 +13,7 @@ function validateInvoicePost(req, res, next) {
   req.checkBody('Amount', 'Amount must be a valid currency (separators: decimal (.), thousands (,)').isCurrency();
   req.checkBody('IsActive', 'IsActive must be 0 (False) or 1 (True)').isIn([0, 1]);
   if (req.body.DeactiveAt) {
-    req.checkBody('DeactiveAt', 'DeactiveAt must follow format YYYY-MM-DD hh:mm:ss').isDateTime();
+    req.checkBody('DeactiveAt', 'DeactiveAt must follow format YYYY-MM-DD [hh:mm:ss]').isDateTime();
   }
 
   req.getValidationResult().then(function(result) {
