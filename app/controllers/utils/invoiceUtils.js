@@ -1,4 +1,4 @@
-var InvoiceUtils = {
+const InvoiceUtils = {
   parsePage: function(page) {
     if (isNaN(page) || page < 1) {
       page = 1;
@@ -42,11 +42,11 @@ var InvoiceUtils = {
     if (typeof sort !== 'string' || sort.length === 0) {
       return {};
     }
-    var allowedParameters = ['ReferenceYear', 'ReferenceMonth', 'Document'];
-    var sortingArray = sort.split(',');
-    var sortingDict = {};
-    for (var i = 0; i < sortingArray.length; i++) {
-      sortingParameter = sortingArray[i];
+    const allowedParameters = ['ReferenceYear', 'ReferenceMonth', 'Document'];
+    const sortingArray = sort.split(',');
+    const sortingDict = {};
+    for (let i = 0; i < sortingArray.length; i++) {
+      let sortingParameter = sortingArray[i];
       ordering = 'ASC';
       if (sortingParameter[0] === '-') {
         sortingParameter = sortingParameter.replace('-', '');
@@ -59,5 +59,4 @@ var InvoiceUtils = {
     return sortingDict;
   }
 };
-
 module.exports = InvoiceUtils;

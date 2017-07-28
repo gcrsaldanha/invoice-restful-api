@@ -1,24 +1,24 @@
-var InvoiceDAO = require('../models/InvoiceDAO');
+const InvoiceDAO = require('../models/InvoiceDAO');
 
-var InvoiceMiddlewares = {
-  lookupInvoice: function(req, res, next) {
-    var id = req.params.id;
-    InvoiceDAO.getInvoiceById(id, function(error, results){
+const InvoiceMiddlewares = {
+  lookupInvoice: (req, res, next) => {
+    const id = req.params.id;
+    InvoiceDAO.getInvoiceById(id, (error, results) => {
       if (error) {
         console.error(error);
         res.statusCode = 500;
-        return res.json({errors: ['Could not retrieve Invoice']});
+        return res.json({ errors: ['Could not retrieve Invoice'] });
       }
       if (results.length === 0) {
         res.statusCode = 404;
-        return res.json({errors: ['Invoice not found']});
+        return res.json({ errors: ['Invoice not found' ]});
       }
       req.invoice = results[0];
       next();
     });
   },
 
-  validateInvoicePostPut: function(req, res, next) {
+  validateInvoicePostPut: (req, res, next) => {
     req.checkBody('ReferenceMonth', 'Month must be an integer between [1, 12]').isInt({min: 1, max: 12});
     req.checkBody('ReferenceYear', 'Year must be a positive integer number').isInt({min: 0});
     req.checkBody('Document', 'Document cannot be empty').notEmpty();
@@ -29,11 +29,10 @@ var InvoiceMiddlewares = {
       req.checkBody('DeactiveAt', 'DeactiveAt must follow format YYYY-MM-DD [hh:mm:ss]').isDateTime();
     }
 
-    req.getValidationResult().then(function(result) {
+    req.getValidationResult().then((result) => {
       if (!result.isEmpty()) {
         res.statusCode = 400;
-        var response = {errors: result.array()};
-        return res.json(response);
+        return res.json({ errors: result.array() });
       } else {
         req.sanitize('Amount').blacklist(',');
         return next();
@@ -41,7 +40,7 @@ var InvoiceMiddlewares = {
     });
   },
 
-  validateInvoicePatch: function(req, res, next) {
+  validateInvoicePatch: (req, res, next) => {
     req.checkBody('ReferenceMonth', 'Month must be an integer between [1, 12]').optional().isInt({min: 1, max: 12});
     req.checkBody('ReferenceYear', 'Year must be a positive integer number').optional().isInt({min: 0});
     req.checkBody('Document', 'Document cannot be empty').optional().notEmpty();
@@ -53,8 +52,7 @@ var InvoiceMiddlewares = {
     req.getValidationResult().then(function(result) {
       if (!result.isEmpty()) {
         res.statusCode = 400;
-        var response = {errors: result.array()};
-        return res.json(response);
+        return res.json({ errors: result.array() });
       } else {
         req.sanitize('Amount').blacklist(',');
         return next();

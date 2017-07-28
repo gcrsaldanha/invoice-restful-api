@@ -1,23 +1,23 @@
-var express = require('express');
-var jwt = require('jsonwebtoken');
-var config = require('config');
-var apiConfig = config.InvoiceProject.apiConfig;
-var InvoiceDAO = require('../models/InvoiceDAO');
-var Utils = require('../utils/InvoiceUtils');
-var Mws = require('./InvoiceMiddlewares');
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const config = require('config');
+const apiConfig = config.InvoiceProject.apiConfig;
+const InvoiceDAO = require('../models/InvoiceDAO');
+const Utils = require('../utils/InvoiceUtils');
+const Mws = require('./InvoiceMiddlewares');
 
-var router = express.Router();
+const router = express.Router();
 
 // Token verification middleware
 router.use((req, res, next) => {
   if (process.env.NODE_ENV !== 'test') {
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    const token = req.body.token || req.query.token || req.headers['x-access-token'];
     if(token) {
       jwt.verify(token, apiConfig.secret, (err, decoded) => {
         if(err) {
           return res.json({
             success: false,
-            errors: [{message: 'Failed to authenticate token.'}],
+            message: 'Failed to authenticate token.',
           });
         } else {
           req.decoded = decoded;
@@ -27,7 +27,7 @@ router.use((req, res, next) => {
     } else {
       return res.status(403).send({
         success: false,
-        errors: [{message: 'No token provided.'}]
+        message: 'No token provided.'
       });
     }
   } else {
@@ -44,24 +44,24 @@ router.get('/:id([0-9]+)', Mws.lookupInvoice, function(req, res) {
 /* GET invoices listing. */
 router.get('/:page?/:limit?/:month?/:year?/:doc?/:sort?/', function(req, res) {
 
-  var page = Utils.parsePage(req.query.page);
-  var limit = Utils.parseLimit(req.query.limit, 50, 10);
-  var month = Utils.parseMonth(req.query.month);
-  var year = Utils.parseYear(req.query.year);
-  var doc = Utils.parseDoc(req.query.doc);
-  var sortingDict = Utils.parseSort(req.query.sort);
+  const page = Utils.parsePage(req.query.page);
+  const limit = Utils.parseLimit(req.query.limit, 50, 10);
+  const month = Utils.parseMonth(req.query.month);
+  const year = Utils.parseYear(req.query.year);
+  const doc = Utils.parseDoc(req.query.doc);
+  const sortingDict = Utils.parseSort(req.query.sort);
 
   InvoiceDAO.getInvoices(page, limit, month, year, doc, sortingDict, function(error, results) {
     if (error) {
       console.error(error);
       res.statusCode = 500;
-      return res.json({errors: ['Failed to retrieve Invoices']});
+      return res.json({ errors: ['Failed to retrieve Invoices'] });
     }
     res.statusCode = 200;
     if (results.length === 0) {
-      return res.json({invoices: []});
+      return res.json({ invoices: [] });
     }
-    return res.json({invoices: results});
+    return res.json({ invoices: results });
   });
 });
 
@@ -73,7 +73,7 @@ router.post('/', Mws.validateInvoicePostPut, function(req, res) {
       res.statusCode = 500;
       return res.json({errors: ['Failed to create Invoice']});
     }
-    var createdInvoiceId = results.insertId;
+    const createdInvoiceId = results.insertId;
     InvoiceDAO.getInvoiceById(createdInvoiceId, function(error, results) {
       if (error) {
         console.error(error);
@@ -92,14 +92,14 @@ router.put('/:id([0-9]+)', Mws.lookupInvoice, Mws.validateInvoicePostPut, functi
     if (error) {
       console.error(error);
       res.statusCode = 500;
-      return res.json({errors: ['Failed to update Invoice']});
+      return res.json({ errors: ['Failed to update Invoice'] });
     }
-    var updatedInvoiceId = req.params.id;
+    const updatedInvoiceId = req.params.id;
     InvoiceDAO.getInvoiceById(updatedInvoiceId, function(error, results) {
       if (error) {
         console.error(error);
         res.statusCode = 500;
-        return res.json({errors: ['Failed to retrieve updated Invoice']});
+        return res.json({ errors: ['Failed to retrieve updated Invoice'] });
       }
       res.statusCode = 200;
       return res.json(results[0]);
@@ -113,14 +113,14 @@ router.patch('/:id([0-9]+)', Mws.lookupInvoice, Mws.validateInvoicePatch, functi
     if (error) {
       console.error(error);
       res.statusCode = 500;
-      return res.json({errors: ['Failed to patch Invoice']});
+      return res.json({ errors: ['Failed to patch Invoice'] });
     }
-    var patchedInvoiceId = req.params.id;
+    const patchedInvoiceId = req.params.id;
     InvoiceDAO.getInvoiceById(patchedInvoiceId, function(error, results) {
       if (error) {
         console.error(error);
         res.statusCode = 500;
-        return res.json({errors: ['Failed to retrieve patched Invoice']});
+        return res.json({ errors: ['Failed to retrieve patched Invoice'] });
       }
       res.statusCode = 200;
       return res.json(results[0]);
@@ -134,11 +134,10 @@ router.delete('/:id([0-9]+)', Mws.lookupInvoice, function(req, res) {
     if (error) {
       console.error(error);
       res.statusCode = 500;
-      return res.json({errors: ['Failed to delete Invoice']});
+      return res.json({ errors: ['Failed to delete Invoice'] });
     }
     res.statusCode = 204;
     return res.send();
   });
 });
-
 module.exports = router;

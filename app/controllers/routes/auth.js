@@ -1,20 +1,20 @@
-var express = require('express');
-var config = require('config');
-var jwt = require('jsonwebtoken');
+const express = require('express');
+const config = require('config');
+const jwt = require('jsonwebtoken');
 
-var apiConfig = config.InvoiceProject.apiConfig;
-var router = express.Router();
+const apiConfig = config.InvoiceProject.apiConfig;
+const router = express.Router();
 
 router.post('/', (req, res) => {
-  var username = req.body.username;
-  var password = req.body.password;
+  const username = req.body.username;
+  const password = req.body.password;
 
   if (username === apiConfig.user) {
     if (password === apiConfig.password) {
-      var token = jwt.sign(
-        {data: username},
+      const token = jwt.sign(
+        { data: username },
         apiConfig.secret,
-        {expiresIn: '24h'});
+        { expiresIn: '24h' });
 
       return res.json({
         success: true,
@@ -22,11 +22,10 @@ router.post('/', (req, res) => {
         token: token
       });
     } else {
-      return res.json({success: false, message: 'Invalid password.'});
+      return res.json({ success: false, message: 'Invalid password.' });
     }
   } else {
-    return res.json({success: false, message: 'Invalid username.'});
+    return res.json({ success: false, message: 'Invalid username.' });
   }
 });
-
 module.exports = router;

@@ -1,13 +1,13 @@
-var express = require('express');
-var config = require('config');
-var moment = require('moment');
-var bodyParser = require('body-parser');
-var morgan = require('morgan');
-var expressValidator = require('express-validator');
+const express = require('express');
+const config = require('config');
+const moment = require('moment');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const expressValidator = require('express-validator');
 
-var app = express();
+const app = express();
 
-var apiConfig = config.InvoiceProject.apiConfig;
+const apiConfig = config.InvoiceProject.apiConfig;
 
 app.use(bodyParser.json({type: 'application/json'}));
 if (process.env.NODE_ENV !== 'test'){
@@ -17,20 +17,20 @@ if (process.env.NODE_ENV !== 'test'){
 app.use(expressValidator({
   customValidators: {
     isDateTime: function(value) {
-      var formats = ['YYYY-MM-DD', "YYYY-MM-DD HH:mm:ss"];
+      const formats = ['YYYY-MM-DD', "YYYY-MM-DD HH:mm:ss"];
       return moment(value, formats, true).isValid();
     }
   }
 }));
 
 /* Routes */
-var authRouter = require('./controllers/routes/auth');
-var invoicesRouter = require('./controllers/routes/invoices');
+const authRouter = require('./controllers/routes/auth');
+const invoicesRouter = require('./controllers/routes/invoices');
 app.use('/auth', authRouter);
 app.use('/invoices', invoicesRouter);
 
 // Server startup
-port = config.InvoiceProject.nodeServer.port;
+const port = config.InvoiceProject.nodeServer.port;
 console.log('Starting server using ' + config.util.getEnv('NODE_ENV') + ' environment.');
 app.listen(port);
 console.log('Server Listening on port ' + port + '...');

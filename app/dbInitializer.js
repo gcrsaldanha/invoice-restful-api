@@ -1,18 +1,17 @@
-var config = require('config');
-var dbConfig = config.get('InvoiceProject.dbConfig');
+const config = require('config');
+const dbConfig = config.get('InvoiceProject.dbConfig');
 
-var mysql = require('mysql');
-var connection = mysql.createConnection({
+const mysql = require('mysql');
+const connection = mysql.createConnection({
   host: dbConfig.host,
   user: dbConfig.user,
   password: dbConfig.password,
   port: dbConfig.port
 });
-module.exports = connection;
 
-var create_database_sql = 'CREATE DATABASE IF NOT EXISTS ' + dbConfig.dbName + ';'
-var use_database_sql = 'USE ' + dbConfig.dbName + ';';
-var create_table_sql = '\
+const create_database_sql = 'CREATE DATABASE IF NOT EXISTS ' + dbConfig.dbName + ';'
+const use_database_sql = 'USE ' + dbConfig.dbName + ';';
+const create_table_sql = '\
 CREATE TABLE IF NOT EXISTS Invoice (\
   Id INTEGER NOT NULL AUTO_INCREMENT,\
   CreatedAt DATETIME NOT NULL,\
@@ -50,3 +49,4 @@ connection.connect(function(err) {
     console.log('Connection closed. Database initialized.');
   });
 });
+module.exports = connection;

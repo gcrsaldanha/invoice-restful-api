@@ -1,10 +1,9 @@
 process.env.NODE_ENV = 'test';
 
-var chai = require('chai');
-var should = chai.should();
-var utils = require('../controllers/utils/InvoiceUtils');
+const chai = require('chai');
+const utils = require('../controllers/utils/InvoiceUtils');
 
-var assert = chai.assert;
+const assert = chai.assert;
 
 describe('InvoiceUtils (parsing)', () => {
 
@@ -24,8 +23,8 @@ describe('InvoiceUtils (parsing)', () => {
   });
 
   describe('parseLimit(limit, maxLimit, defaultLimit)', () => {
-    defaultLimit = 10;
-    maxLimit = 50;
+    const defaultLimit = 10;
+    const maxLimit = 50;
     it('should return defaultLimit if limit is NaN', () => {
       assert.equal(utils.parseLimit('asdf', maxLimit, defaultLimit), defaultLimit);
     });
@@ -85,33 +84,33 @@ describe('InvoiceUtils (parsing)', () => {
       assert.equal(utils.parseDoc(123), '');
     });
     it('should return doc if doc is a string', () => {
-      var doc = 'A string with ' + 123 + ' numbers';
+      const doc = 'A string with ' + 123 + ' numbers';
       assert.equal(utils.parseDoc(doc), doc);
     });
   });
 
   describe('parseSort(sort)', () => {
-    var validSort = '-ReferenceYear,ReferenceMonth';
-    var onlyOneValidAttribute = 'RefEtc,ReferenceYear';
+    const validSort = '-ReferenceYear,ReferenceMonth';
+    const onlyOneValidAttribute = 'RefEtc,ReferenceYear';
     it('should return an empty dict if sort is not a string', () => {
-      var dict = utils.parseSort(1234);
-      var expectedDict = {}
+      const dict = utils.parseSort(1234);
+      const expectedDict = {}
       assert.isTrue(Object.keys(dict).length === 0);
       assert.equal(JSON.stringify(dict), JSON.stringify(expectedDict));
     });
     it('should return an empty dict if sort is an empty string', () => {
-      var dict = utils.parseSort('');
-      var expectedDict = {}
+      const dict = utils.parseSort('');
+      const expectedDict = {}
       assert.isTrue(Object.keys(dict).length === 0);
       assert.equal(JSON.stringify(dict), JSON.stringify(expectedDict));
     });
     it('should return a parsed dict {\'<InvoiceAttribute>\': \'ASC|DESC\'} if sort is valid', () => {
-      var expectedDict = JSON.stringify({'ReferenceYear': 'DESC', 'ReferenceMonth': 'ASC'});
+      const expectedDict = JSON.stringify({'ReferenceYear': 'DESC', 'ReferenceMonth': 'ASC'});
       assert.equal(JSON.stringify(utils.parseSort(validSort)), expectedDict);
       assert.isTrue(Object.keys(utils.parseSort(validSort)).length === 2);
     });
     it('should return a parsed dict with ANY valid attribute', () => {
-      var expectedDict = JSON.stringify({'ReferenceYear': 'ASC'});
+      const expectedDict = JSON.stringify({'ReferenceYear': 'ASC'});
       assert.equal(JSON.stringify(utils.parseSort(onlyOneValidAttribute)), expectedDict);
       assert.isTrue(Object.keys(utils.parseSort(onlyOneValidAttribute)).length === 1);
     });

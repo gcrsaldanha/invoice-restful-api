@@ -1,25 +1,16 @@
 process.env.NODE_ENV = 'test';
 
-var config = require('config');
-var chai = require('chai');
-var request = require('supertest');
+const config = require('config');
+const chai = require('chai');
+const request = require('supertest');
 
-var app = require('../app');
-var InvoiceDAO = require('../controllers/models/InvoiceDAO');
+const app = require('../app');
+const InvoiceDAO = require('../controllers/models/InvoiceDAO');
 
-var assert = chai.assert;
-var serverConfig = config.get('InvoiceProject.nodeServer');
+const assert = chai.assert;
+const serverConfig = config.get('InvoiceProject.nodeServer');
 
-var validInvoice = {
-  "CreatedAt": "2017-12-21 21:00:30",
-  "ReferenceMonth": 12,
-  "ReferenceYear": 2012,
-  "Document": "a3kvdfj9",
-  "Description": "lorem ipsum description",
-  "Amount": 10.50,
-  "IsActive": 1,
-  "DeactiveAt": "2018-12-20 10:00:00"
-}
+
 
 describe('Invoices routes test', () => {
   beforeEach(() => {
@@ -41,10 +32,7 @@ describe('Invoices routes test', () => {
   });
 
   describe('GET /user/:id', () => {
-    InvoiceDAO.addInvoice(validInvoice, function(err, res) { });
-    InvoiceDAO.deleteAll(function(err, result) { });
-
-    it('respond with 404 not found ', (done) => {
+    it('should respond with 404 not found ', (done) => {
       request(app)
         .get('/invoices/1')
         .expect(404, done);
