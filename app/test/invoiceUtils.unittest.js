@@ -6,7 +6,7 @@ var utils = require('../controllers/utils/InvoiceUtils');
 
 var assert = chai.assert;
 
-describe('InvoiceUtils (parsing)', () => {
+describe.skip('InvoiceUtils (parsing)', () => {
 
   describe('parsePage(page)', () => {
     it('should return 1 if page is NaN', () => {

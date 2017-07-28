@@ -10,7 +10,9 @@ var app = express();
 var apiConfig = config.InvoiceProject.apiConfig;
 
 app.use(bodyParser.json({type: 'application/json'}));
-app.use(morgan('dev'));
+if (process.env.NODE_ENV !== 'test'){
+  app.use(morgan('dev'));
+}
 
 app.use(expressValidator({
   customValidators: {
