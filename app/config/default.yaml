@@ -9,3 +9,6 @@ InvoiceProject:
     secret: thatsmysecret
     user: apiuser
     password: apipassword
+  nodeServer:
+    host: localhost
+    port: 3000
