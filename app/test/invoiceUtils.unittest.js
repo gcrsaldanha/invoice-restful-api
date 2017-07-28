@@ -90,8 +90,8 @@ describe('InvoiceUtils (parsing)', () => {
   });
 
   describe('parseSort(sort)', () => {
-    const validSort = '-ReferenceYear,ReferenceMonth';
-    const onlyOneValidAttribute = 'RefEtc,ReferenceYear';
+    const validSort = '-year,month';
+    const onlyOneValidAttribute = 'asdf,year';
     it('should return an empty dict if sort is not a string', () => {
       const dict = utils.parseSort(1234);
       const expectedDict = {}

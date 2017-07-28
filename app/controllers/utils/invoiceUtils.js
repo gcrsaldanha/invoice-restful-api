@@ -42,7 +42,11 @@ const InvoiceUtils = {
     if (typeof sort !== 'string' || sort.length === 0) {
       return {};
     }
-    const allowedParameters = ['ReferenceYear', 'ReferenceMonth', 'Document'];
+    const abbreviationToAttribute = {
+      'year': 'ReferenceYear',
+      'month': 'ReferenceMonth',
+      'doc': 'Document'
+    }
     const sortingArray = sort.split(',');
     const sortingDict = {};
     for (let i = 0; i < sortingArray.length; i++) {
@@ -52,8 +56,9 @@ const InvoiceUtils = {
         sortingParameter = sortingParameter.replace('-', '');
         ordering = 'DESC';
       }
-      if (allowedParameters.includes(sortingParameter)) {
-        sortingDict[sortingParameter] = ordering;
+      if (Object.keys(abbreviationToAttribute).includes(sortingParameter)) {
+        let invoiceAttribute = abbreviationToAttribute[sortingParameter];
+        sortingDict[invoiceAttribute] = ordering;
       }
     }
     return sortingDict;
