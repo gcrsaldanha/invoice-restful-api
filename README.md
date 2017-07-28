@@ -4,6 +4,9 @@ A NodeJS/Express RESTful API for handling invoices.
 
 It's intended to be used as a **learning resource** (i.e., not suitable for production use).
 
+## API Interface
+If you already have your project set up, head over to [API Interface Documentation](API.md).
+
 ## Getting Started
 ### Configuration File
 There are 3 files to be configured under [app/config/](app/config/):
