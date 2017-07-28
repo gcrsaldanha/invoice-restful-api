@@ -3,8 +3,6 @@ process.env.NODE_ENV = 'test';
 var config = require('config');
 var chai = require('chai');
 var request = require('supertest');
-var proxyquire = require('proxyquire');
-var sinon = require('sinon');
 
 var app = require('../app');
 var InvoiceDAO = require('../controllers/models/InvoiceDAO');
@@ -23,7 +21,7 @@ var validInvoice = {
   "DeactiveAt": "2018-12-20 10:00:00"
 }
 
-describe.skip('Invoices routes test', () => {
+describe('Invoices routes test', () => {
   beforeEach(() => {
     InvoiceDAO.deleteAll((err, result) => {
       if (err) throw err;
@@ -31,14 +29,14 @@ describe.skip('Invoices routes test', () => {
   });
 
   describe('GET /invoices', () => {
-    it('should respond with an empty array', () => {
+    it('should respond with an empty array', (done) => {
       request(app)
         .get('/invoices')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200, {
           invoices: [],
-        });
+        }, done);
     });
   });
 
@@ -46,10 +44,10 @@ describe.skip('Invoices routes test', () => {
     InvoiceDAO.addInvoice(validInvoice, function(err, res) { });
     InvoiceDAO.deleteAll(function(err, result) { });
 
-    it('respond with 404 not found ', () => {
+    it('respond with 404 not found ', (done) => {
       request(app)
         .get('/invoices/1')
-        .expect(404);
+        .expect(404, done);
     });
   });
 });
