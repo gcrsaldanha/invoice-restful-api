@@ -14,8 +14,6 @@ There are 3 files to be configured under [app/config/](app/config/):
 - [dev.yaml](app/config/dev.yaml)
 - [test.yam](app/config/test.yaml)
 
-More information: [node-config](https://github.com/lorenwest/node-config)
-
 ***DISCLAIMER***: credentials were put "raw" in this file for simplicity. If you want to use it publicly, consider reading credentials from environment variables.
 
 The meaning of each value is as follows:
@@ -33,9 +31,13 @@ The meaning of each value is as follows:
   
 ### Starting the server
 After setting up the configuration files as indicated above:
+
 `npm install` inside `app/` folder to install the dependencies.
+
 `export NODE_ENV=dev`(*Optional but recommended*)
+
 `node dbInitializer`: creates database according to `NODE_ENV` and config files
+
 `npm start`: starts the server using `config` parameters
 
 ***For testing***: 
